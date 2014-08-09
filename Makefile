@@ -1,0 +1,5 @@
+all: tungarazaConnectomeAnalysis2014.tex tungarazaConnectomeAnalysis2014.bib
+	pdflatex tungarazaConnectomeAnalysis2014.tex
+	bibtex tungarazaConnectomeAnalysis2014
+	pdflatex tungarazaConnectomeAnalysis2014.tex
+	pdflatex tungarazaConnectomeAnalysis2014.tex
