@@ -1,4 +1,4 @@
-all: tungarazaConnectomeAnalysis2014.tex tungarazaConnectomeAnalysis2014.bib
+all: tungarazaConnectomeAnalysis2014.tex tungarazaConnectomeAnalysis2014.bib tungarazaConnectomeAnalysis2014_maintext.tex
 	pdflatex tungarazaConnectomeAnalysis2014.tex
 	bibtex tungarazaConnectomeAnalysis2014
 	pdflatex tungarazaConnectomeAnalysis2014.tex
