@@ -1,0 +1,322 @@
+\section{Introduction}
+
+With its new emphasis on collecting larger datasets, data sharing, deep
+phenotyping, and multimodal integration, neuroimaging has become a data
+intensive science. This is particularly true for connectomics where grass-root
+initiatives (e.g.the 1000 Functional Connectomes Project (FCP)
+\cite{Biswal2010}, the International Neuroimaging Data-sharing Initiative
+(INDI) \cite{Mennes2013}) and large-scale interational projects (the Human
+Connectome Project\cite{Sotiropoulus2013,VanEssen2012}, the Brain Connectome
+project from China\cite{Jiang2013}, the human brain project in EU known as
+CONNECT\cite{Assaf2013}, PING, NDAR \todo{i am not sure that all of these share
+data}) are collecting and openly sharing thousands of brain imaging scans, each
+of which consist of hundreds of observations of thousands of variables.
+Although this deluge of complex data promises to enable the investigation of
+neuroscientific questions that were previously inaccessible, it is quickly
+overwhelming the capacity of existing tools and algorithms to extract
+meaningful information from the data. This combined with a new focus on
+discovery science is creating a plethora of opportunities for data scientists
+from a wide range of disciplines such as computer science, engineering,
+mathematics, statistics, etc., to make substantial contributions to
+neuroscience. The goal of this review is to describe the state-of-the-art in
+connectomics research and enumerate opportunities for data scientists to
+contribute to the field.
+
+The human connectome is a comprehensive map of the brain's circuitry, which
+consists of brain areas, their structural connections and their functional
+interactions. The connectome can be measured with a variety of different
+imaging techniques, but magnetic resonance imaging (MRI) is the most common
+primarily due to its near-ubiquity, non-invasiveness, and high spatial
+resolution. As measured by MRI: brain areas are patches of cortex
+(approximately 1\si{\centi\meter\cubed} volume) containing 1,000s of neurons,
+structural connections are long range fiber tracts that are inferred from the
+motion of water particles measured by diffusion weighted MRI (dMRI), and
+functional interactions are inferred from synchronized brain activity measured
+by functional MRI (fMRI). Addressing the current state-of-the-art for both
+functional and structural connectivity is well beyond the scope of a single
+review. Instead, this review will focus on functional connectivity, which is
+particularly fast growing and offers many exciting opportunities for data
+scientists.
+
+The advent of functional connectivity analyses has popularized the application
+of discovery science to brain function, which marks a shift in emphasis from
+hypothesis testing, to supervised and unsupervised methods for learning
+statistical relationships from the data. Since functional connectivity is
+inferred from statistical dependencies between physiological measures of brain
+activity (i.e. correlations between the dependent variables), it can be
+measured without an experimental manipulation. Thus, functional connectivity is
+most commonly measured from "resting state" fMRI scans, during which the study
+participant is lying quietly and not performing an experimenter specified task
+- when measured in this way, it is referred to as intrinsic functional
+connectivity (iFC). Once iFC is measured, data mining techniques can be applied
+to identify iFC patterns that covary with phenotypes, such as, indices of
+cognitive abilities, personality traits, or disease state, severity, and
+prognosis, to name a few. In a time dominated by skepticism about the
+ecological validity of psychiatric diagnoses, iFC analyses have become
+particularly important for identifying subgroups within patient populations by
+similarity in brain architecture, rather than similarity in symptom profiles.
+This new emphasis in discovery necessitates a new breed of data analysis tools
+that are equipped to deal with the issues inherent to functional neuroimaging
+data.
+
+\section{The Connectome Analysis Paradigm}
+
+In 2005 Sporn and Hagmann \cite{Sporns2005,Hagmann2005} independently and in
+parallel coined the term \textit{the human connectome}, which embodies the
+notion that the set of all connections within the human brain can be
+represented and understood as graphs. In the context of iFC, graphs provide a
+mathematical representation of the functional interactions between brain areas -
+ nodes in the graph represent brain areas and edges indicate their functional connectivity.
+While general graphs can have multiple edges between two nodes, brain
+graphs tend to be simple graphs with a single undirected edge between pairs of
+nodes (i.e. the direction of influence between nodes is unknown). Additionally
+edges in graphs of brain function tend to be weighted - annotated with a value
+that indicates the similarity between nodes. Analyzing the functional connectome 
+involves 1) preprocessing the data to remove confounding variation and to make
+it comparable across datasets, 2) specification of brain areas to be used as nodes,
+3) identification of edges from the iFC between nodes, and 4) analysis of the graph
+(i.e. the structure and edges) to identifiy relationships with inter- or intra- individual
+variability. All of these steps have been well covered in the literature \todo{cite many papers} by other
+reviews and repeating that information provides little value. Instead we will focus on a 
+exciting areas in the functional connectomics literature that we beleive provide the greatest
+opportunities for data scientists in this quickly advancing field.
+
+\subsection{Modeling connections}
+
+A variety of different bivariate and multivariate methods have been proposed for measuring the
+similarity between timecourses of brain areas \citep{SmithNeuor2010,Varoquaux}. Although these
+methods are well suited for identifying weighted edges for connectome graphs, they provide an
+incomplete picture of node interactions that limits the amount of neuroscientific information
+that can be extracted.  Thus several different modeling techniques have been proposed 
+to provide a more precise mathematical description of the relationship between brain areas. Model
+confirmatory approaches such as structural equation modeling (SEM) and dynamic causal modeling (DCM)
+offer fairly detailed descriptions of node relationships that have shown great promise in applications
+such as predicting the affected hemisphere from stroke data \cite{GAJames}. But, they rely on the
+prespecification of a model and are limited in the size of a network that can be modeled. Cross-validation
+methods have been proposed to systematically search for the best model, but simulations have shown that
+those methods do not necessarily converge to the correct model \cite{lohman}. Granger causality has 
+been particularly popular due to its promise of identifying causal relationships between nodes based on
+temporal lags between them \cite{}. But the assumptions underlying granger causality do not quite fit with 
+fMRI data, where delays in the time-courses between regions may reflect some physiological 
+phenomena, such as a perfusion deficit \cite{Lv}, rather than causal relationships between brain areas. 
+    - MVR models
+
+Despite the successful application of the technique mentioned above, a drawback
+of representing a brain graph as a bag of edges is that this representation
+throws away all information about the structure of the graph. Being able to
+retain these graph structures within an analysis commonly known as Frequent
+Subgraph Mining (FSM) has facilitated the discovery of features that better
+discriminated between different groups of graphs \cite{Harrison2013}. For
+instance, \cite{Bogdanov2014} were able to identify discriminative subgraphs
+from functional connectivity graphs that had a high predictive power for high
+versus low learners given specific motor tasks. \cite{Richiardi2013} outlines
+other approaches that take the graph structure into account e.g. the graph edit
+distance and a number of different graph kernels. All these methods are under
+active development and have not been widely adapted by the connectomics
+
+\subsection{Dynamic Connectivity}
+
+Standard seed- and ICA- methods for mapping iFC assume that it is stationary,
+and derive connectivity patters from the entirity of the available fMRI time
+course. Recent studies however, have demonstrated that connectivity between
+brain regions change dynamically over time \cite{Chang, Keilholz,
+Hutchinson2013, Fu2013}. A variety of investigations have dynamic iFC have
+already been performed, most of which measure connectivity withen small a
+window of the fMRI time course that is gradually moved forward along time
+\cite{}. Several problems must be overcome in order to reliably measure
+changing functional connectivity patterns, from the inherently slow and poorly
+sampled fMRI signal. First, the variance of correlation estimates increases
+with decreasing window size, meaning that unless proper statistical controls
+are utilized, the observed dynamics may arise solely from the increased
+variance \cite{}. This issue may be mitigated using the new higher speed
+imaging methods, which has already shown promise for extracting dynamic network
+modes using temporal ICA, although really large number of observations are
+still necessary \cite{Smith2012}.\todo{verify this} Node definition is another
+issue, as it is unclear whether brain areas defined from static iFC are
+appropriate for dynamic iFC, although initial work has shown that parcellations
+of at least some brain regions from dynamic iFC are consistent with what is
+found with static \cite{Yang2013}. As the connectomes field moves toward
+dynamic connectivity, there will be a large need for the development of new
+analysis paradigms and tools for their identification and iterpretation. 
+
+\subsection{Comparing brain graphs} 
+
+The ultimate goals of connectomics is to map the brain's functional
+architecture and to annotate that architecture with the cognitive or behavioral
+functions that they subtend. This latter pursuit is achieved by a group level
+analysis in which variations in the connectome are mapped to inter-individual
+variations in phenotype \cite{Kelly2011}, or intra-individual responses to
+experimental perturbations \cite{Shirer}. Several different analyses have been
+proposed for accomplishing these goals, and they all require some mechanism for
+comparing brain graphs. 
+ 
+Approaches to comparing brain graphs can be differentiated based on how they
+treat the statistical relationships between edges. One such approach, referred
+to as \emph{bag of edges}, is to treat each edge in the brain graph as a sample
+from some random variable. Thus, a set of $N$ brain graphs each with $M$ edges
+will have $N$ observations for each of the $M$ random variables. In this case,
+the adjacency (or similarity) matrix that describes the brain graphs can be
+flattened into a vector representation and any of the well explored similarity
+or dissimilarity metrics can be applied to the data \cite{Ravindran}. One of
+the benefits of this representation is the ability to treat each edge as
+independent of all other edges and to compare graphs using mass univariate
+analysis, in which, a separate univariate statistical test (e.g. t-test, anova,
+or ancova) is performed at each edge. This will result in a very large number
+of comparisons and an appropriate correction for multiple comparisons, such as
+Network Based Statistic \cite{Zalesky2011}, Spatial Pairwise Clustering
+\cite{Zalesky2012}, Statistical Parametric Networks \cite{Ginestet2013}, or
+group-wise false discovery rate \cite{}, must be employed to control the number
+of false positives. Alternatively the interdependencies between edges can be
+modeled at the node level using multivariate distance multiple regression
+(MDMR) \cite{Shehzad2014}, or across all edges using machine learning methods
+\cite{Craddock2009, Dosenbach2010, Richiardi2011}. Despite the successful
+application of this technique, a drawback of representing a brain graph as a
+bag of edges is that this representation throws away all information about the
+structure of the graph.  In an effort to overcome these limitations, work is
+being done to look at sub-graphs \cite{} \todo{how about directly comparing
+graphs using a graph similarity metric}
+
+Another approach for graph similarity using all the vertexes involves computing
+a set of \emph{graph-invariants} such as node centrality, modality, global
+efficiency, etc. and using the values of these measures to represent the graph
+\cite{rubinov}\cite{bullmoreReview}. Depending on the invariant used, this
+approach may permit the direct comparison of graphs that are not aligned.
+Another advantage is that invariants substantially reduce the dimensionality of
+the graph comparison problem. On the other hand, representing the graph using
+its computed invariants throws away information about that graph's vertex
+labels \cite{Vogelstein2012}. Moreover, after computing these invariants it is
+often unclear how they can be interpreted biologically. It is important that
+the invariant used matches the relationships represented by the graph. Since,
+edges in functional brain graphs represent statistical dependencies between
+nodes and not anatomical connections, many of the path based invariants do not
+make sense, as indirect relationships are not interpretable \cite{}. For
+example, the relationships $A \leftrightarrow B$ and $B \leftrightarrow C$ do
+not imply that there is a path between nodes $A$ and $C$, if a statistical
+relationship between $A$ and $C$ were to exist they would be connected
+directly.   
+
+\subsubsection{Prediction}
+
+Resting state fMRI and iFC analyses are most commonly applied to studying
+clinical disorders and to this end, the ultimate goal is the identification of
+biomarkers of disease state, severity, and prognosis\cite{DiMartino}. To this
+end, prediction modelling has become a popular analysis method because it most
+directly addresses the question of biomarker
+efficacy\cite{craddock,Dosenbach,review}. Additionally, the prediction
+framework provides a principled means for validating multivariate models that
+more accurately deal with the statistical dependencies between edges than mass
+univariate techniques, all while obviating the need to correct for multiple
+comparisons. The general framework involves learning a relationship between a
+\emph{training} set of brain graphs and a corresponding categorical or
+continuous variable. The features for the brain graphs can be (1) a set of
+topological properties from each brain graph \cite{Cecci2009, Bassett2012}, (2)
+a vector embedding of the brain graphs \cite{Richiadi2013,Luo2003}, or (3) the
+result of passing the brain graphs through a graph kernel \cite{}. The learnt
+model is then applied to an independent \emph{testing} set of brain graphs to
+decode or \emph{predict} their corresponding value of the variable. These
+values are compared to their "true" values to estimate \emph{prediction
+accuracy} - a measure of how well the model generalizes to know data. Several
+different strategies can be employed to split the data into training and
+testing datasets, although leave-one-out cross-validation has high variance and
+should be avoided \cite{}. Although the advanced machine learning methods
+commonly employed in this framework offer excellent prediction accuracy, they
+are often black boxes, for which the information that is used to make the
+predictions is not easily discernable. To this end, sparse methods and feature
+selection can be employed to reduce the input variables to only those that are
+essential for prediction, thereby aiding the extraction of neuroscientifically
+meaningful information from the learnt model. A variety of different machine
+learning algorithms have been applied to analyzing brain graphs in this manner,
+but by far the most commonly employed has been support vector
+machines\cite{DiMartino}. Their is still considerable work to be performed in
+improving the extraction of information from these models, for developing
+techniques that permit multiple labels to be considered jointly, and developing
+kernels for measuring distances between graphs.
+
+\subsubsection{blobbing}
+
+\subsubsection{specificity, better controls}
+
+\subsection{Informatics}
+
+\subsection{Turtles all the way down}
+
+- Controversies for preprocessing
+- Role of graph alignment
+- Batch effects
+- Dimensionality reduction
+- Lack of a gold standard
+
+With the growing prevalence of openly shared data, the desire to compare data
+acquired on different scanners, with different scanning protocols, and at
+different sites is becoming common. Although early studies have found that the
+amount of biological variation between individuals outweighs between site
+variation\cite{biswal}, there is still a need to standardize datasets against
+batch effects\cite{YanStand}. Ideally, this will entail the acquisition of
+calibration data, but until an accepted standard on what this calibration data
+will include exists and its collection becomes commonplace, post-hoc
+statistical corrections will be essential. Understanding the nature of batch
+effects and developing adequate correction strategies is in its infancy and
+there is substantial need for contributions in this area.  
+
+No matter what type of method is being applied, iFC analyses are plagued by the
+curse of dimensionality and an inability to validate their results with a gold
+standard. Functional MRI datasets typically involve hundreds or thousands of
+scans, each of which consist of a time series of hundreds of 3D brain volumes,
+that each contain measures from hundreds of thousands of brain locations
+(variables). Whether performing an analysis within a scan, or across scans, the
+number of variables (N) is much larger than the number of observations (P).
+Different analyses have approached the dimensionality problems in different
+ways, but there is no consensus on the best algorithm for brain data. Indeed
+there isn't a consensus about the best methods to use for any step of iFC
+analyses, and this lack of agreement is due to a lack of a ground truth or gold
+standard for comparing different techniques. Although several simulations have
+been proposed, there is always some skepticism about their accuracy and
+comprehensiveness. In their place, cross validation techniques have been
+utilized to compare methods based on some measure of reproducibility and/or
+generalizability.
+
+A considerable drawback of using data-driven approaches for defining brain
+regions, is that the number of regions in the clustering solution, or
+conversely their size, must be specified. The choice of node size has been
+shown to have a considerable effect on the resulting graph topology
+\cite{Zalesky} and can also affect the outcome of an analysis\cite{Cecci_2009}.
+There are a variety of mechanisms for optimizing the number of brain areas in a
+parcellation, many of which using cross-validation methods, but in application
+they do not tend to converge to a single optimum, and instead provide a range
+of parcellations that are suitable\cite{craddock2012}. The choice of
+parcellation used will strictly depend on the problem to be solved by that
+analysis and the amount of error that one can allow when interpreting the
+results. 
+
+
+\section{Open Science Resources}
+
+As with other big data problems, the analysis of the type of brain data
+described above will benefit significantly from open science and open data. By
+open science we mean the process of making intermediate and end data products
+available to researchers outside the lab that initiated the investigation and
+by open data we mean data sharing, data reuse, allowing groups other than the
+ones that acquired the data to further analyze freely available data
+\cite{Milham2012}. Both open science and open data have the benefit of
+facilitating the creation of new questions to answer from a data set that the
+people who acquired the data didn't conceive. A great example of this is the
+bioinformatics community, which came into existence due to the availability of
+large genomics datasets that were publicly available and could be used by
+anybody who possessed the skills and knowledge to mine them\cite{VanHorn2013}.
+This brought scientists and researchers from disparate fields (ranging from
+biology, statistics, to computer science and engineering) together. The same
+can be aspired for the brain imaging community by making data acquired in
+different labs publicly available. At the moment there are a few public
+databases such as the fMRI data center \footnote{fmri datacenter webaddress},
+LONI IDA \footnote{LONI webaddress}, 1000 Functional Connectomes Project
+(FCP)\footnote{\url{http://fcon_1000.projects.nitrc.org}}, the International
+Neuroimaging Data-sharing Initiative (INDI)\footnote{INDI webaddress}, ABIDE
+preprocessed\footnote{\url{http://preprocessed-connectomes-project.github.io/abide/}},
+Human Connectome Project \footnote{HCP webaddress}, ADHD 200 preprocessed
+\footnote{\url{http://neurobureau.projects.nitrc.org/ADHD200/Introduction.html}},CORR
+\footnote{\url{http://fcon_1000.projects.nitrc.org/indi/CoRR/html/index.html}}.
+Among these, there are a few such as the data from the Human Connectome Project
+and the Cameron data set, which contain clean and tidy data. The latter will
+speed up knowledge discovery and new method development by alleviating the need
+for newcomers to acquire the knowledge and skills required to properly clean
+raw MRI data. 
