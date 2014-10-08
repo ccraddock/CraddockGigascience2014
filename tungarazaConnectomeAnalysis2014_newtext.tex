@@ -83,6 +83,7 @@ opportunities for data scientists in this quickly advancing field.
 
 \subsection{Modeling connections}
 
+\subsubsection{Static Connectivity}
 A variety of different bivariate and multivariate methods have been proposed for measuring the
 similarity between timecourses of brain areas \citep{SmithNeuor2010,Varoquaux}. Although these
 methods are well suited for identifying weighted edges for connectome graphs, they provide an
@@ -99,28 +100,24 @@ been particularly popular due to its promise of identifying causal relationships
 temporal lags between them \cite{}. But the assumptions underlying granger causality do not quite fit with 
 fMRI data, where delays in the time-courses between regions may reflect some physiological 
 phenomena, such as a perfusion deficit \cite{Lv}, rather than causal relationships between brain areas. 
-    - MVR models
 
-Despite the successful application of the technique mentioned above, a drawback
-of representing a brain graph as a bag of edges is that this representation
-throws away all information about the structure of the graph. Being able to
-retain these graph structures within an analysis commonly known as Frequent
-Subgraph Mining (FSM) has facilitated the discovery of features that better
-discriminated between different groups of graphs \cite{Harrison2013}. For
-instance, \cite{Bogdanov2014} were able to identify discriminative subgraphs
-from functional connectivity graphs that had a high predictive power for high
-versus low learners given specific motor tasks. \cite{Richiardi2013} outlines
-other approaches that take the graph structure into account e.g. the graph edit
-distance and a number of different graph kernels. All these methods are under
-active development and have not been widely adapted by the connectomics
+Perhaps the oldest model of functional connectivity represents the activity of a single brain areas
+or node as the weighted average of the activity measured in every other region of the brain \cite{Firston, 1993}. 
+This multivariate regression model provides a more complete picture than commonly used bivariate measures, because the estimated 
+coefficients describe a precise mathematical relationship, albeit not causal, between brain areas. Additionally this model
+is primarily sensitive to direct, rather than indirect, interactions. Unfortunately due to the large number of brain areas in the connectome, and the 
+few numbers of observations available standard resting state fMRI acquisitions, this model is underdetermined, and methods
+that rely on either dimensionality reduction \cite{Friston1993} or regularization \cite{Gael, Craddock, etc} must be employed to find a unique solution. These methods have yet to become very popular for modeling connections, perhaps due to the complexity (real or perceived) in their use. One interesting
+application of these multivariate regression approach, is that they can be applied to data from a different scanning session, experimental paradigm,
+or even a different subjet to measure how well the model generalizes to the new data \cite{Craddock}. 
 
 \subsection{Dynamic Connectivity}
 
 Standard seed- and ICA- methods for mapping iFC assume that it is stationary,
-and derive connectivity patters from the entirity of the available fMRI time
+and derive connectivity patterns from the entirity of the available fMRI time
 course. Recent studies however, have demonstrated that connectivity between
 brain regions change dynamically over time \cite{Chang, Keilholz,
-Hutchinson2013, Fu2013}. A variety of investigations have dynamic iFC have
+Hutchinson2013, Fu2013, Zhen}. A variety of investigations have dynamic iFC have
 already been performed, most of which measure connectivity withen small a
 window of the fMRI time course that is gradually moved forward along time
 \cite{}. Several problems must be overcome in order to reliably measure
@@ -135,9 +132,7 @@ still necessary \cite{Smith2012}.\todo{verify this} Node definition is another
 issue, as it is unclear whether brain areas defined from static iFC are
 appropriate for dynamic iFC, although initial work has shown that parcellations
 of at least some brain regions from dynamic iFC are consistent with what is
-found with static \cite{Yang2013}. As the connectomes field moves toward
-dynamic connectivity, there will be a large need for the development of new
-analysis paradigms and tools for their identification and iterpretation. 
+found with static \cite{Yang2013}.
 
 \subsection{Comparing brain graphs} 
 
@@ -169,12 +164,22 @@ group-wise false discovery rate \cite{}, must be employed to control the number
 of false positives. Alternatively the interdependencies between edges can be
 modeled at the node level using multivariate distance multiple regression
 (MDMR) \cite{Shehzad2014}, or across all edges using machine learning methods
-\cite{Craddock2009, Dosenbach2010, Richiardi2011}. Despite the successful
+\cite{Craddock2009, Dosenbach2010, Richiardi2011}.
+
+
+ Despite the successful
 application of this technique, a drawback of representing a brain graph as a
 bag of edges is that this representation throws away all information about the
-structure of the graph.  In an effort to overcome these limitations, work is
-being done to look at sub-graphs \cite{} \todo{how about directly comparing
-graphs using a graph similarity metric}
+structure of the graph. Being able to
+retain these graph structures within an analysis commonly known as Frequent
+Subgraph Mining (FSM) has facilitated the discovery of features that better
+discriminated between different groups of graphs \cite{Harrison2013}. For
+instance, \cite{Bogdanov2014} were able to identify discriminative subgraphs
+from functional connectivity graphs that had a high predictive power for high
+versus low learners given specific motor tasks. \cite{Richiardi2013} outlines
+other approaches that take the graph structure into account e.g. the graph edit
+distance and a number of different graph kernels. All these methods are under
+active development and have not been widely adapted by the connectomics
 
 Another approach for graph similarity using all the vertexes involves computing
 a set of \emph{graph-invariants} such as node centrality, modality, global
@@ -199,18 +204,20 @@ directly.
 
 Resting state fMRI and iFC analyses are most commonly applied to studying
 clinical disorders and to this end, the ultimate goal is the identification of
-biomarkers of disease state, severity, and prognosis\cite{DiMartino}. To this
-end, prediction modelling has become a popular analysis method because it most
+biomarkers of disease state, severity, and prognosis\cite{DiMartino}. Prediction
+ modelling has become a popular analysis method because it most
 directly addresses the question of biomarker
 efficacy\cite{craddock,Dosenbach,review}. Additionally, the prediction
 framework provides a principled means for validating multivariate models that
 more accurately deal with the statistical dependencies between edges than mass
 univariate techniques, all while obviating the need to correct for multiple
-comparisons. The general framework involves learning a relationship between a
+comparisons. 
+
+The general predictive framework involves learning a relationship between a
 \emph{training} set of brain graphs and a corresponding categorical or
 continuous variable. The features for the brain graphs can be (1) a set of
 topological properties from each brain graph \cite{Cecci2009, Bassett2012}, (2)
-a vector embedding of the brain graphs \cite{Richiadi2013,Luo2003}, or (3) the
+a vector embedding of the brain graphs \cite{Richiadi2013,Luo2003, Craddock2009}, or (3) the
 result of passing the brain graphs through a graph kernel \cite{}. The learnt
 model is then applied to an independent \emph{testing} set of brain graphs to
 decode or \emph{predict} their corresponding value of the variable. These
@@ -218,23 +225,73 @@ values are compared to their "true" values to estimate \emph{prediction
 accuracy} - a measure of how well the model generalizes to know data. Several
 different strategies can be employed to split the data into training and
 testing datasets, although leave-one-out cross-validation has high variance and
-should be avoided \cite{}. Although the advanced machine learning methods
-commonly employed in this framework offer excellent prediction accuracy, they
-are often black boxes, for which the information that is used to make the
-predictions is not easily discernable. To this end, sparse methods and feature
-selection can be employed to reduce the input variables to only those that are
-essential for prediction, thereby aiding the extraction of neuroscientifically
-meaningful information from the learnt model. A variety of different machine
-learning algorithms have been applied to analyzing brain graphs in this manner,
-but by far the most commonly employed has been support vector
-machines\cite{DiMartino}. Their is still considerable work to be performed in
+should be avoided \cite{}. 
+
+A variety of different machine learning algorithms have been applied to analyzing brain graphs in this manner,
+but by far the most commonly employed has been support vector machines\cite{DiMartino}. Although these methods 
+offer excellent prediction accuracy, they are often black boxes, for which the information that is used to make the
+predictions is not easily discernable. The extraction of neuroscientifically
+meaningful information from the learnt model cab be added by employing sparse methods and feature
+selection to reduce the input variables to only those that are
+essential for prediction.  There is still considerable work to be performed in
 improving the extraction of information from these models, for developing
 techniques that permit multiple labels to be considered jointly, and developing
 kernels for measuring distances between graphs.
 
+\subsubsubsection{specificity, better controls}
+
+As a quick aside, it is important to keep in mind a few common analytical and experimental decisions that 
+limit the utility of the putative biomarkers learned through predictive modeling. Generalization ability is
+most commonly used to measure the quality of predictive models, but since this measure doesn't consider the
+prevalance of the disorder in the population, it doesn't provide an accurate picture of how well a clinical 
+diagnostic based on the model would perform. Instead it is important to estimate positive and negative predictive 
+values \cite{Grimes, Altman} using disease prevalence information from resources such as Centers for Disease Control and 
+Prevention Mortality and Morbidity Weekly Reports. Also, the majority of neuroimaging studies are designed to 
+differentiate between an ultra-healthy cohort and a single severely-ill population, which further waters down
+estimates of specificity. Instead it is also important to validate a biomarker's ability to differentiate between
+several different disease populations - a very understudied area of connectomes research. Lastly, most predictive
+modeling based explorations of the connectome are classifier based, which is very sensitive to noisy labels. Methods 
+which incoporate some measure of label uncertainty or are robust to noisy labels are needed to help deal with this confound.
+
+
+\subsubsubsection{dimensions}
+With the growing uncertainty about the biological validity of classical categorizations
+of mental health disorders, there is a growing focus on symptoms that can be measured dimensionally. This 
+Research Domain Criteria (RDoC) has become a major focus of the NIMH, and will no doubt engender a major shift in the 
+manner in which connectomes experiments are performed. In the context of predicitive modeling this translates into change in
+focus toward regression mdoels, which to date have been under utilizied in analyses of connectomes. But this dissatisfaction
+with extant clinical categories, opens up a new broad opportunity for redefining clinical populations based on their 
+biology rather than their symptomatology.
+
+
+
+Most prediction modeling in connectomes research has focused on classifier problems, with few studies using
+regression frameworks. 
+
 \subsubsection{blobbing}
 
-\subsubsection{specificity, better controls}
+A very under explored area of study is distinguishing between different popl
+
+Predictive models are 
+typically validated 
+
+
+Several limitations of neuroimaging data, and the manner in which predicitive modeling analyses are 
+commonly employed, limit the utility of the putative biomarkers that they learn. Probably the foremost
+issue is that they are typically validated using cross-validation generalization accuracy, which does not
+consider disease prevalence in their calculation, and thus is not informative about how well the classifier
+would perform as a clinical diagnostic. For example, given a mental disorder with a high prevalence
+(ADHD, 7.2\%) the probability of receving a false positive on a test with 100\% sensitivity and 90\% specificity
+is .56, and for less common disorders (Autism, 1\%) the probability of a false positive becomes almost .91 \cite{grimes,altmanbland}.
+Valuable information on prevalence of different disorders can be found from Centers for Disease Control and Prevention Mortality
+and Morbidity Weekly Reports.  
+
+Most neuroimaging studies of disease populations acquire data from an ultra-healthy cohort that is compared to
+a severely-ill population. Although this strategy is ideal for maximizing power in inferential statistics, it 
+
+
+
+
 
 \subsection{Informatics}
 
