@@ -111,20 +111,22 @@
 %% as required.                             %%
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author[
+   addressref={aff1,aff2},
+   corref={aff1}, 
+   email={ccraddock@nki.rfmh.org}
+]{\inits{RCC}\fnm{R. Cameron} \snm{Craddock}}
 
 \author[
    addressref={aff1},                   % id's of addresses, e.g. {aff1,aff2}
    email={rosalia.tungaraza@childmind.org}   % email address
 ]{\inits{RT}\fnm{Rosalia L.} \snm{Tungaraza}}
+
 \author[
    addressref={aff1,aff2}, 
    email={michael.milham@childmind.org}
 ]{\inits{MPM}\fnm{Michael P.} \snm{Milham}}
-\author[
-   addressref={aff1,aff2},
-   corref={aff2}, 
-   email={ccraddock@nki.rfmh.org}
-]{\inits{RCC}\fnm{R. Cameron} \snm{Craddock}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -134,8 +136,16 @@
 %% required.                                %%
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \address[id=aff1]{%                           % unique id
+  \orgname{Computational Neuroimaging Lab, Center for Biomedical Imaging and Neuromodulation, Nathan Kline Institute for Psychiatric Research}, % university, etc
+  \street{140 Old Orangeburg Rd},                     %
+  \postcode{10962}                                % post or zip code
+  \city{Orangeburg},                              % city
+  \state{New York},
+  \cny{USA}                                    % country
+}
+
+\address[id=aff2]{%                           % unique id
   \orgname{Center for the Developing Brain, Child Mind Institute}, % university, etc
   \street{445 Park Ave},                     %
   \postcode{10022}                                % post or zip code
@@ -144,14 +154,6 @@
   \cny{USA}                                    % country
 }
 
-\address[id=aff2]{%                           % unique id
-  \orgname{Center for Advanced Brain Imaging, Nathan Kline Institute for Psychiatric Research}, % university, etc
-  \street{140 Old Orangeburg Rd},                     %
-  \postcode{10962}                                % post or zip code
-  \city{Orangeburg},                              % city
-  \state{New York},
-  \cny{USA}                                    % country
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -240,7 +242,7 @@ Text for this section.
 %%%%%%%%%%%%%%%%%%%%%%%%% start of article main body
 % <put your article body there>
 
-\input{tungarazaConnectomeAnalysis2014_maintext}
+\input{tungarazaConnectomeAnalysis2014_newtext_v2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
