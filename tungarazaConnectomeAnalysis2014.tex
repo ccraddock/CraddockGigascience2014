@@ -43,8 +43,8 @@
 
 %%% loading packages, author definitions
 
-%\documentclass[twocolumn]{bmcart}% uncomment this for twocolumn layout and comment line below
-\documentclass{bmcart}
+\documentclass[twocolumn]{bmcart}% uncomment this for twocolumn layout and comment line below
+%\documentclass{bmcart}
 
 %%% Load packages
 \usepackage{amsthm,amsmath}
@@ -56,6 +56,8 @@
 %\usepackage[applemac]{inputenc} %applemac support if unicode package fails
 %\usepackage[latin1]{inputenc} %UNIX support if unicode package fails
 
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                             %%
@@ -111,21 +113,20 @@
 %% as required.                             %%
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
 \author[
    addressref={aff1,aff2},
-   corref={aff1}, 
+   corref={aff1},
    email={ccraddock@nki.rfmh.org}
-]{\inits{RCC}\fnm{R. Cameron} \snm{Craddock}}
-
+]{\inits{RCC} \fnm{R. Cameron} \snm{Craddock}}
 \author[
    addressref={aff1},                   % id's of addresses, e.g. {aff1,aff2}
    email={rosalia.tungaraza@childmind.org}   % email address
-]{\inits{RT}\fnm{Rosalia L.} \snm{Tungaraza}}
-
+]{\inits{RLT} \fnm{Rosalia L.} \snm{Tungaraza}}
 \author[
    addressref={aff1,aff2}, 
    email={michael.milham@childmind.org}
-]{\inits{MPM}\fnm{Michael P.} \snm{Milham}}
+]{\inits{MPM} \fnm{Michael P.} \snm{Milham}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -144,7 +145,6 @@
   \state{New York},
   \cny{USA}                                    % country
 }
-
 \address[id=aff2]{%                           % unique id
   \orgname{Center for the Developing Brain, Child Mind Institute}, % university, etc
   \street{445 Park Ave},                     %
@@ -167,7 +167,7 @@
 \begin{artnotes}
 \end{artnotes}
 
-\end{fmbox}% comment this for two column layout
+%\end{fmbox}% comment this for two column layout
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -183,12 +183,12 @@
 \begin{abstractbox}
 
 \begin{abstract} % abstract
-\parttitle{First part title} %if any
-Text for this section.
+	
+	Estimating the functional interactions between brain regions and mapping those connections to inter-individual variability are central pursuits for understanding the human connectome. The number and complexity of funcitonal interactions withen the connectome and the large amounts of data required to study them position functional connectivity research as a ``big data'' problem. Maximimizing the degree to which knowledge about human brain function can be extracted from the connectome will require developing a new generation of neuroimaging analysis algorithms and tools. This review describes several outstanding problems in brain functional connectivity research with the goal of engaging researchers from a broad specturm of data sciences to help solve these problems. Additionally it provides information about open science resources consisting of raw and preprocessed data to help interested researchers get started. 
 
-\parttitle{Second part title} %if any
-Text for this section.
 \end{abstract}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -215,7 +215,7 @@ Text for this section.
 
 \end{abstractbox}
 %
-%\end{fmbox}% uncomment this for twcolumn layout
+\end{fmbox}% uncomment this for twcolumn layout
 
 \end{frontmatter}
 
@@ -278,6 +278,21 @@ Text for this section.
 % if your bibliography is in bibtex format, use those commands:
 \bibliographystyle{bmc-mathphys} % Style BST file
 \bibliography{tungarazaConnectomeAnalysis2014} % Bibliography file (usually '*.bib' )
+
+\section*{Figures}
+  \begin{figure}[h!]
+  \caption{\csentence{Sample figure title.}
+      A short description of the figure content
+      should go here.}
+      \end{figure}
+
+\begin{figure}[h!]
+  \caption{\csentence{Sample figure title.}
+      Figure legend text.}
+      \end{figure}
+	  
+\section*{Tables}
+\input{tungarazaConnectomeAnalysis2014_tables}
 
 \end{backmatter}
 \end{document}
