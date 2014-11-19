@@ -1,5 +1,5 @@
-all: tungarazaConnectomeAnalysis2014.tex tungarazaConnectomeAnalysis2014.bib tungarazaConnectomeAnalysis2014_maintext.tex
-	pdflatex tungarazaConnectomeAnalysis2014.tex
-	bibtex tungarazaConnectomeAnalysis2014
-	pdflatex tungarazaConnectomeAnalysis2014.tex
-	pdflatex tungarazaConnectomeAnalysis2014.tex
+all: craddockGigascience2014.tex craddockGigascience2014.bib craddockGigascience2014_maintext.tex
+	pdflatex craddockGigascience2014.tex
+	bibtex craddockGigascience2014
+	pdflatex craddockGigascience2014.tex
+	pdflatex craddockGigascience2014.tex
