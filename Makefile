@@ -1,5 +1,11 @@
 all: craddockGigascience2014.tex craddockGigascience2014.bib craddockGigascience2014_maintext.tex
-	pdflatex craddockGigascience2014.tex
-	bibtex craddockGigascience2014
-	pdflatex craddockGigascience2014.tex
-	pdflatex craddockGigascience2014.tex
+	pdflatex craddockGigascience2014_v2.tex
+	bibtex craddockGigascience2014_v2
+	pdflatex craddockGigascience2014_v2.tex
+	pdflatex craddockGigascience2014_v2.tex
+
+marked: craddockGigascience2014_v2_marked.tex craddockGigascience2014.bib craddockGigascience2014_maintext.tex
+	pdflatex craddockGigascience2014_v2_marked.tex
+	bibtex craddockGigascience2014_v2_marked
+	pdflatex craddockGigascience2014_v2_marked.tex
+	pdflatex craddockGigascience2014_v2_marked.tex
